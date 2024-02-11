@@ -52,7 +52,6 @@ const Playground = () => {
     audio.addEventListener("timeupdate", handleDataProgressUpdate);
     audio.addEventListener("loadedmetadata", handleDataProgress);
 
-
     return () => {
       audio.removeEventListener("timeupdate", handleDataProgressUpdate);
       audio.removeEventListener("loadedmetadata", handleDataProgress);
@@ -61,6 +60,7 @@ const Playground = () => {
 
   const handleIsSuffer = () => {
     setIsSuffer(!isSuffer);
+    console.log(listSong.length);
   };
   const handleIsRepeat = () => {
     const audio = audioRef.current;
@@ -89,14 +89,23 @@ const Playground = () => {
 
   const handleNext = () => {
     dispatch(getSong(musicCurr + 1));
+    const sufferMusic = Math.floor(Math.random() * listSong.length);
+    if (isSuffer) {
+      dispatch(getSong(sufferMusic));
+    }
     if (musicCurr >= listSong.length - 1) {
       dispatch(getSong(0));
     }
   };
   const handlePrev = () => {
-    dispatch(getSong(musicCurr - 1));
-    if (musicCurr === 0) {
-      dispatch(getSong(0));
+    const sufferMusic = Math.floor(Math.random() * listSong.length);
+    if (isSuffer) {
+      dispatch(getSong(sufferMusic));
+    } else {
+      dispatch(getSong(musicCurr - 1));
+      if (musicCurr === 0) {
+        dispatch(getSong(0));
+      }
     }
   };
   const handleChange = (e) => {
